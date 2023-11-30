@@ -1,0 +1,72 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2206                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale   1; //Scale coordinates
+
+vertices
+(
+    (0 0 0)   //vertex 0
+    (1 0 0)   //vertex 1
+    (1 1 0)   //vertex 2
+    (0 1 0)   //vertex 3
+    (0 0 5)   //vertex 4
+    (1 0 5)   //vertex 5
+    (1 1 5)   //vertex 6
+    (0 1 5)   //vertex 7
+);
+
+blocks
+( //Definition of the hexahedral block. Pay attention to the numbering.
+    hex (0 1 2 3 4 5 6 7) (20 20 100) simpleGrading (1 1 1) //Uniform gradient
+);  
+    //20 cells in x-direction, 20 cells in y-direction, and 100 cells in z-direction.
+    
+edges //This is simple geometry, edges can be empty.
+(
+);
+boundary //Definition of boundary of the domain to apply the BC.
+(
+    inlet
+    {
+        type patch; 
+        faces
+        (
+            (0 3 2 1)
+        );
+    }
+    outlet
+    {
+        type patch; 
+        faces
+        (
+            (4 5 6 7)
+        );
+    }
+    wall
+    {
+        type wall;
+        faces
+        (
+            (3 7 6 2)
+            (0 4 7 3)
+            (2 6 5 1)
+            (1 5 4 0)
+        );
+    }
+);
+
+
+// ************************************************************************* //
