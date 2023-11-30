@@ -1,0 +1,163 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+castellatedMesh true;
+snap            false;
+addLayers       false;
+
+geometry
+{
+    inlet.stl
+    {
+        type triSurfaceMesh;
+        name inlet;
+    }
+    outlet.stl
+    {
+        type triSurfaceMesh;
+        name outlet;
+    }
+    pipe.stl
+    {
+        type triSurfaceMesh;
+        name pipe;
+    }
+    tank.stl
+    {
+        type triSurfaceMesh;
+        name tank;
+    }
+};
+
+castellatedMeshControls
+{
+    maxLocalCells 100000;
+    maxGlobalCells 2000000;
+    minRefinementCells 0;
+
+    nCellsBetweenLevels 10;
+    features
+    (
+        {
+            file "inlet.eMesh";
+            level 0;
+        }
+        {
+            file "outlet.eMesh";
+            level 0;
+        }
+        {
+            file "pipe.eMesh";
+            level 0;
+        }
+        {
+            file "tank.eMesh";
+            level 0;
+        }
+    );
+
+    refinementSurfaces
+    {
+        inlet
+        {
+            
+            level (0 0);
+        }
+	outlet
+        {
+            level (0 0);
+        }
+	pipe
+        {
+            level (0 0);
+        }
+	tank
+        {
+            level (0 0);
+        }
+    }
+
+    resolveFeatureAngle 30;
+
+    refinementRegions
+    {	
+    }
+    locationInMesh (0 0 0); 
+    allowFreeStandingZoneFaces true;
+}
+
+snapControls
+{
+    nSmoothPatch 3;
+    tolerance 1.0;
+    nSolveIter 300;
+    nRelaxIter 5;
+
+        nFeatureSnapIter 10;
+        implicitFeatureSnap false;
+        explicitFeatureSnap true;
+        multiRegionFeatureSnap true;
+}
+
+addLayersControls
+{
+    relativeSizes true;
+    layers
+    {
+        "flange_.*"
+        {
+            nSurfaceLayers 1;
+        }
+    }
+
+    expansionRatio 1.0;
+    finalLayerThickness 0.3;
+    minThickness 0.25;
+    nGrow 0;
+    featureAngle 30;
+    nRelaxIter 5;
+    nSmoothSurfaceNormals 1;
+    nSmoothNormals 3;
+    nSmoothThickness 10;
+    maxFaceThicknessRatio 0.5;
+    maxThicknessToMedialRatio 0.3;
+    minMedianAxisAngle 90;
+    nBufferCellsNoExtrude 0;
+    nLayerIter 50;
+    nRelaxedIter 20;
+}
+
+meshQualityControls
+{
+    #include "meshQualityDict"
+    relaxed
+    {
+        maxNonOrtho 75;
+    }
+
+    nSmoothScale 4;
+    errorReduction 0.75;
+}
+
+writeFlags
+(
+    scalarLevels    
+    layerSets    
+    layerFields  
+);
+mergeTolerance 1E-6;
+
+// ************************************************************************* //
