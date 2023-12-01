@@ -1,0 +1,11 @@
+https://github.com/mscelebi/OpenFOAMWorkshop/
+https://www.openfoam.com/
+https://www.paraview.org/
+
+
+To the last line of the bashrc file:
+
+alias of2206='source /usr/lib/openfoam/openfoam2206/etc/bashrc'
+alias paraview-5.10='~/Desktop/hacer/ParaView-5.10.1-MPI-Linux-Python3.9-x86_64/bin/paraview'
+
+
